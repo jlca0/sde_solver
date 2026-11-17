@@ -1,0 +1,30 @@
+# Compilación
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+*.o
+*.so
+*.dylib
+*.pyd
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Resultados
+*.png
+*.pdf
+!docs/*.png
+
+# Sistema / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Archivos privados
+py/ibex35.py
+doc.md
