@@ -24,7 +24,6 @@ venv/
 .DS_Store
 .vscode/
 .idea/
-
-# Archivos privados
-py/ibex35.py
+py/cartera.ipynb
 doc.md
+py/FT.numbers
