@@ -8,7 +8,7 @@ T = 1
 n_realizaciones = 10000
 n_nodos = 1000
 
-muestra_bp = [sde.BrownianPath(T, n_nodos) for _ in range(n_realizaciones)]
+muestra_bp = [sde.BrownianPath(T, n_nodos, s) for s in range(n_realizaciones)]
 
 muestra_gbm = np.zeros((n_realizaciones,n_nodos+1))
 for k in range(n_realizaciones):
@@ -20,18 +20,18 @@ malla = [125,250,500,1000]
 mu      = lambda t, x:  x
 sigma   = lambda t, x: 0.5 * x
 error0 = 1
-for N in malla:  # Refinamiento
+for n_pasos in malla:  # Refinamiento
     error1 = 0
     for k in range(n_realizaciones):  # Montecarlo
-        aprox = sde.EulerMaruyama(N)
+        aprox = sde.EulerMaruyama(n_pasos)
         aprox.solve(X0, T, mu, sigma, muestra_bp[k])
         aprox_array = np.array(aprox.get_trayectoria())
         error1 += abs(aprox_array[-1]-muestra_gbm[k,-1])
     error1 = error1/n_realizaciones
-    if N != malla[0]:
-        print(f'El error es: {np.log(error0/error1)/np.log(2):.4f}')
+    if n_pasos != malla[0]:
+        print(f'El orden es: {np.log(error0/error1)/np.log(2):.4f}')
     else:
-        print('El error es: ---')
+        print('El orden es: ---')
     error0 = error1
 print('\n')   
 
@@ -41,17 +41,17 @@ mu      = lambda t, x:  x
 sigma   = lambda t, x: 0.5 * x
 sigmax   = lambda t, x: 0.5
 error0 = 1
-for N in malla:  # Refinamiento 
+for n_pasos in malla:  # Refinamiento 
     error1 = 0
     for k in range(n_realizaciones):  # Montecarlo
-        aprox = sde.Milstein(N)
+        aprox = sde.Milstein(n_pasos)
         aprox.solve(X0, T, mu, sigma, sigmax, muestra_bp[k])
         aprox_array = np.array(aprox.get_trayectoria())
         error1 += abs(aprox_array[-1]-muestra_gbm[k,-1])
     error1 = error1/n_realizaciones
-    if N != malla[0]:
-        print(f'El error es: {np.log(error0/error1)/np.log(2):.4f}')
+    if n_pasos != malla[0]:
+        print(f'El orden es: {np.log(error0/error1)/np.log(2):.4f}')
     else:
-        print('El error es: ---')
+        print('El orden es: ---')
     error0 = error1
 print('\n')    
