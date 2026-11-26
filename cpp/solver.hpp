@@ -5,18 +5,15 @@
 #include <functional>
 #include <stdexcept>
 
-using namespace std;
-
 class BrownianPath {
     public:
-        vector<double> camino;
+        std::vector<double> camino;
 
-        BrownianPath(double T, int pasos) {
+        BrownianPath(double T, int pasos, int semilla) {
             double dt = T / pasos;
             double sqrtdt = sqrt(dt);
-            random_device rd;
-            mt19937 gen(rd());
-            normal_distribution<double> normal(0.0, 1.0);
+            std::mt19937 gen(semilla);
+            std::normal_distribution<double> normal(0.0, 1.0);
 
             camino.resize(pasos + 1);
             camino[0] = 0.0;
@@ -29,7 +26,7 @@ class BrownianPath {
 
 class BrownianBridge {
     public:
-        vector<double> camino;
+        std::vector<double> camino;
 
         BrownianBridge(double T, const BrownianPath& W) {
             int pasos = W.camino.size() - 1;
@@ -45,7 +42,7 @@ class BrownianBridge {
 
 class ExactGeomPath {
     private:
-        vector<double> camino;
+        std::vector<double> camino;
 
     public:
 
@@ -62,34 +59,34 @@ class ExactGeomPath {
             }
         }
 
-        vector<double> get_trayectoria() const {
+        std::vector<double> get_trayectoria() const {
             return camino;
         }
 };
 
 class EulerMaruyama {
     private:
-        vector<double> trayectoria;
+        std::vector<double> trayectoria;
 
     public:
         EulerMaruyama(int pasos) {
             trayectoria.resize(pasos + 1);
         }
 
-        vector<double> get_trayectoria() const {
+        std::vector<double> getdeac_trayectoria() const {
             return trayectoria;
         }
 
         void solve(double X0, double T, 
-                function<double(double,double)> mu, 
-                function<double(double,double)> sigma,
+                std::function<double(double,double)> mu, 
+                std::function<double(double,double)> sigma,
                 const BrownianPath& W) {
 
             int pasos_camino = W.camino.size() - 1;
             int pasos_trayectoria = trayectoria.size() - 1;
 
             if (pasos_camino % pasos_trayectoria != 0) {
-                throw runtime_error("El tamaño del camino browniano no es múltiplo del número de pasos.");
+                throw std::runtime_error("El tamaño del camino browniano no es múltiplo del número de pasos.");
             }
 
             int inc = pasos_camino / pasos_trayectoria;
@@ -108,29 +105,29 @@ class EulerMaruyama {
 
 class Milstein {
     private:
-        vector<double> trayectoria;
+        std::vector<double> trayectoria;
 
     public:
         Milstein(int pasos) {
             trayectoria.resize(pasos + 1);
         }
 
-        vector<double> get_trayectoria() const {
+        std::vector<double> get_trayectoria() const {
             return trayectoria;
         }
 
         void solve(double X0, 
                    double T, 
-                   function<double(double,double)> mu, 
-                   function<double(double,double)> sigma,
-                   function<double(double,double)> sigma_x,
+                   std::function<double(double,double)> mu, 
+                   std::function<double(double,double)> sigma,
+                   std::function<double(double,double)> sigma_x,
                    const BrownianPath& W) {
 
             int pasos_camino = W.camino.size() - 1;
             int pasos_trayectoria = trayectoria.size() - 1;
 
             if (pasos_camino % pasos_trayectoria != 0) {
-                throw runtime_error("El tamaño del camino browniano no es múltiplo del número de pasos.");
+                throw std::runtime_error("El tamaño del camino browniano no es múltiplo del número de pasos.");
             }
 
             int inc = pasos_camino / pasos_trayectoria;

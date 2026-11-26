@@ -13,7 +13,7 @@ PYBIND11_MODULE(sde, m) {
 
     // Camino browniano
     py::class_<BrownianPath>(m, "BrownianPath")
-        .def(py::init<double, int>(), py::arg("T"), py::arg("pasos"))
+        .def(py::init<double, int, int>(), py::arg("T"), py::arg("pasos"), py::arg("semilla"))
         .def_readwrite("camino", &BrownianPath::camino);
 
     // Puente browniano
